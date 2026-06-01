@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Permit Admin Portal</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script src="./js/tailwind-config.js"></script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Utility classes */
+        .page-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .page-section.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast Notification */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+        }
+        .toast {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans h-screen flex overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-slate-200 flex-shrink-0 flex flex-col transition-all duration-300 fixed md:relative z-30 h-full hidden md:flex">
+        <div class="h-16 flex items-center px-6 border-b border-slate-100">
+            <i class="fa-solid fa-graduation-cap text-brand-600 text-2xl mr-3"></i>
+            <h1 class="font-bold text-xl text-slate-800 tracking-tight">ExamPortal</h1>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                <li><button onclick="nav.to('dashboard')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-chart-line w-6"></i> Dashboard</button></li>
+                
+                <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Management</li>
+                <li><button onclick="nav.to('students')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-user-graduate w-6"></i> Students</button></li>
+                <li><button onclick="nav.to('teachers')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-chalkboard-user w-6"></i> Teachers</button></li>
+                <li><button onclick="nav.to('sections')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-users w-6"></i> Sections</button></li>
+                
+                <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Finance & Eligibility</li>
+                <li><button onclick="nav.to('balances')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-wallet w-6"></i> Balances</button></li>
+                <li><button onclick="nav.to('promissory')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-file-signature w-6"></i> Promissory Notes</button></li>
+                
+                <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Exam System</li>
+                <li><button onclick="nav.to('periods')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-calendar-days w-6"></i> Exam Periods</button></li>
+                <li><button onclick="nav.to('permits')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-ticket w-6"></i> Exam Permits</button></li>
+                
+                <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">System</li>
+                <li><button onclick="nav.to('reports')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-chart-pie w-6"></i> Reports</button></li>
+                <li><button onclick="nav.to('settings')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-gear w-6"></i> Settings</button></li>
+            </ul>
+        </nav>
+
+        <div class="p-4 border-t border-slate-200">
+            <button onclick="auth.logout()" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none transition-colors">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <div class="flex-1 flex flex-col min-w-0 bg-slate-50">
+        
+        <!-- MOBILE HEADER -->
+        <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-4 md:px-8">
+            <div class="flex items-center">
+                <button id="mobile-menu-btn" class="md:hidden mr-4 text-slate-500 hover:text-slate-700 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <h2 id="page-title" class="text-lg font-semibold text-slate-800">Dashboard</h2>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right hidden sm:block">
+                    <p class="text-sm font-medium text-slate-900">Admin User</p>
+                    <p class="text-xs text-slate-500">Registrar Office</p>
+                </div>
+                <img src="https://picsum.photos/seed/admin/40/40" alt="Avatar" class="h-9 w-9 rounded-full border border-slate-200">
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT SCROLL AREA -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8" id="main-content">
+            <div id="modules-root"></div>
+        </main>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container"></div>
+
+    <!-- MODALS (Generic Wrapper) -->
+    <div id="modal-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-50 hidden z-40 flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0">
+        
+        <!-- Student Modal -->
+        <div id="student-modal" class="bg-white rounded-xl shadow-xl w-full max-w-lg hidden transform scale-95 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-semibold text-lg text-slate-800">Student Details</h3>
+                <button onclick="utils.closeModal('student-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form onsubmit="students.save(event)" class="p-6 space-y-4">
+                <input type="hidden" name="id">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Student ID</label>
+                    <input type="text" name="studentId" placeholder="02000XXXXXX" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    <p class="text-xs text-slate-500 mt-1">Format: 02000 + 6 digits (auto-generated if blank)</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+                        <input type="text" name="firstName" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+                        <input type="text" name="lastName" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Course</label>
+                        <select name="course" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                            <option value="" disabled selected>Select course</option>
+                            <option value="BSHM">BSHM</option>
+                            <option value="BSTM">BSTM</option>
+                            <option value="BSIT">BSIT</option>
+                            <option value="BSCS">BSCS</option>
+                            <option value="BSCpE">BSCpE</option>
+                            <option value="BMMA">BMMA</option>
+                            <option value="BSBA">BSBA</option>
+                            <option value="BSA">BSA</option>
+                            <option value="BSAIS">BSAIS</option>
+                            <option value="BSP">BSP</option>
+                            <option value="BSC">BSC</option>
+                            <option value="BSE">BSE</option>
+                            <option value="BEE">BEE</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Year Level</label>
+                        <select name="yearLevel" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Section</label>
+                    <select id="student-section-select" name="sectionId" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Current Balance</label>
+                    <input type="number" name="balance" min="0" step="0.01" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="utils.closeModal('student-modal')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700">Save Student</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Teacher Modal -->
+        <div id="teacher-modal" class="bg-white rounded-xl shadow-xl w-full max-w-lg hidden transform scale-95 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-semibold text-lg text-slate-800">Teacher Details</h3>
+                <button onclick="utils.closeModal('teacher-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form onsubmit="teachers.save(event)" class="p-6 space-y-4">
+                <input type="hidden" name="id">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <input type="text" name="name" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                    <input type="email" name="email" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Assigned Subjects (comma separated)</label>
+                    <input type="text" name="subjects" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="utils.closeModal('teacher-modal')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700">Save Teacher</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Section Modal -->
+        <div id="section-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-semibold text-lg text-slate-800">Section Details</h3>
+                <button onclick="utils.closeModal('section-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form onsubmit="sections.save(event)" class="p-6 space-y-4">
+                <input type="hidden" name="id">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Section Name</label>
+                    <input type="text" name="name" placeholder="e.g., BSIT-1A" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Course</label>
+                    <input type="text" name="course" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Year Level</label>
+                    <select name="yearLevel" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="utils.closeModal('section-modal')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700">Save Section</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Promissory Note Modal (Review) -->
+        <div id="promissory-review-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-semibold text-lg text-slate-800">Review Promissory Note</h3>
+                <button onclick="utils.closeModal('promissory-review-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="p-6">
+                <div id="promissory-details" class="space-y-3 mb-6 text-sm">
+                    <!-- Dynamic Content -->
+                </div>
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-slate-700">Admin Remarks</label>
+                    <textarea id="promissory-remarks" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm"></textarea>
+                    <div class="flex justify-between pt-2">
+                        <button onclick="promissory.updateStatus('Rejected')" class="px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200">Reject</button>
+                        <button onclick="promissory.updateStatus('Approved')" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Period Modal -->
+        <div id="period-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-semibold text-lg text-slate-800">Exam Period</h3>
+                <button onclick="utils.closeModal('period-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form onsubmit="periods.save(event)" class="p-6 space-y-4">
+                <input type="hidden" name="id">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Period Name</label>
+                    <select name="name" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                        <option value="Prelim">Prelim</option>
+                        <option value="Midterm">Midterm</option>
+                        <option value="Pre-Final">Pre-Final</option>
+                        <option value="Final">Final</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Semester</label>
+                    <select name="semester" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                        <option value="1st Semester">1st Semester</option>
+                        <option value="2nd Semester">2nd Semester</option>
+                        <option value="Summer">Summer</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Start Date</label>
+                        <input type="date" name="startDate" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">End Date</label>
+                        <input type="date" name="endDate" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    </div>
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="utils.closeModal('period-modal')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700">Save Period</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Permit View Modal -->
+        <div id="permit-view-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-xl">
+                <h3 class="font-semibold text-lg text-slate-800">Exam Permit</h3>
+                <button onclick="utils.closeModal('permit-view-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="p-8 flex flex-col items-center justify-center text-center border-2 border-dashed border-slate-300 m-4 rounded-lg bg-white relative">
+                <div id="permit-content" class="w-full">
+                    <!-- Permit Details -->
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-100 flex justify-center bg-slate-50 rounded-b-xl">
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-900"><i class="fa-solid fa-print mr-2"></i> Print Permit</button>
+            </div>
+        </div>
+
+        <!-- Balance Quick Edit Modal -->
+        <div id="balance-edit-modal" class="bg-white rounded-xl shadow-xl w-full max-w-sm hidden transform scale-95 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-semibold text-lg text-slate-800">Update Balance</h3>
+                <button onclick="utils.closeModal('balance-edit-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form onsubmit="balances.update(event)" class="p-6 space-y-4">
+                <input type="hidden" name="studentId">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">New Balance Amount</label>
+                    <input type="number" name="newBalance" step="0.01" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="utils.closeModal('balance-edit-modal')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700">Update</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC (split by sidebar modules; no import/export) -->
+    <script src="./js/core/db.js" defer></script>
+    <script src="./js/core/utils.js" defer></script>
+    <script src="./js/core/nav.js" defer></script>
+
+    <script src="./js/modules/dashboard.js" defer></script>
+    <script src="./js/modules/students.js" defer></script>
+    <script src="./js/modules/teachers.js" defer></script>
+    <script src="./js/modules/sections.js" defer></script>
+    <script src="./js/modules/balances.js" defer></script>
+    <script src="./js/modules/promissory.js" defer></script>
+    <script src="./js/modules/periods.js" defer></script>
+    <script src="./js/modules/permits.js" defer></script>
+    <script src="./js/modules/reports.js" defer></script>
+    <script src="./js/modules/settings.js" defer></script>
+
+    <script src="./js/core/auth.js" defer></script>
+    <script src="./js/init.js" defer></script>
+    <script src="./js/module-loader.js" defer></script>
+</body>
+</html>

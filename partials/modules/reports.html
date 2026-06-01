@@ -1,0 +1,33 @@
+<!-- 9. REPORTS MODULE -->
+<section id="reports" class="page-section">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Semester</label>
+                <select id="report-semester-filter" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    <option value="1st Semester">1st Semester</option>
+                    <option value="2nd Semester">2nd Semester</option>
+                    <option value="Summer">Summer</option>
+                </select>
+            </div>
+            <div class="flex-1">
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Exam Period</label>
+                <select id="report-period-filter" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm"></select>
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Report Card 1 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="font-semibold text-lg mb-4 text-slate-800">Generated Permits</h3>
+            <ul id="report-with-balance" class="space-y-2 max-h-60 overflow-y-auto text-sm text-slate-600"></ul>
+            <button onclick="utils.downloadCSV('balance')" class="mt-4 text-brand-600 text-sm font-medium hover:underline">Download CSV</button>
+        </div>
+        <!-- Report Card 2 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="font-semibold text-lg mb-4 text-slate-800">Eligible (No Permit Yet)</h3>
+            <ul id="report-cleared" class="space-y-2 max-h-60 overflow-y-auto text-sm text-slate-600"></ul>
+            <button onclick="utils.downloadCSV('cleared')" class="mt-4 text-brand-600 text-sm font-medium hover:underline">Download CSV</button>
+        </div>
+    </div>
+</section>

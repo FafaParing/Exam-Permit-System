@@ -1,0 +1,28 @@
+<!-- 8. EXAM PERMITS MODULE -->
+<section id="permits" class="page-section">
+    <div class="flex justify-between items-center mb-6">
+        <div class="text-sm text-slate-500">
+            <i class="fa-solid fa-circle-info mr-1"></i> Permits generate only for students with 0 balance OR approved promissory note, during an active exam period.
+        </div>
+        <button onclick="permits.generateAllEligible()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-sm">
+            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Generate Eligible Permits
+        </button>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-slate-600">
+                <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="px-6 py-3">Permit ID</th>
+                        <th class="px-6 py-3">Student Name</th>
+                        <th class="px-6 py-3">Section</th>
+                        <th class="px-6 py-3">Exam Period</th>
+                        <th class="px-6 py-3">Valid Until</th>
+                        <th class="px-6 py-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="permits-table-body" class="divide-y divide-slate-100"></tbody>
+            </table>
+        </div>
+    </div>
+</section>

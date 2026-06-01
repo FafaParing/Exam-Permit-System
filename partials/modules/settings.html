@@ -1,0 +1,30 @@
+<!-- 10. SETTINGS MODULE -->
+<section id="settings" class="page-section">
+    <div class="max-w-2xl bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+        <h3 class="text-xl font-semibold text-slate-800 mb-6 border-b pb-4">System Settings</h3>
+        <form id="settings-form" onsubmit="settings.save(event)">
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">School Name</label>
+                    <input type="text" name="schoolName" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Academic Year</label>
+                    <input type="text" name="academicYear" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Active Semester</label>
+                    <select name="activeSemester" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 outline-none">
+                        <option value="1st Semester">1st Semester</option>
+                        <option value="2nd Semester">2nd Semester</option>
+                        <option value="Summer">Summer</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between pt-4">
+                    <span class="text-sm text-slate-500">System Version 1.0.0</span>
+                    <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">Save Changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,26 @@
+<!-- 5. STUDENT BALANCES MODULE -->
+<section id="balances" class="page-section">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
+        <div class="flex gap-4">
+            <button onclick="balances.filter('all')" class="px-4 py-2 bg-brand-50 text-brand-700 rounded-lg text-sm font-medium hover:bg-brand-100 transition">All</button>
+            <button onclick="balances.filter('cleared')" class="px-4 py-2 bg-slate-50 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-100 transition">Cleared</button>
+            <button onclick="balances.filter('with-balance')" class="px-4 py-2 bg-slate-50 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-100 transition">With Balance</button>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-slate-600">
+                <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="px-6 py-3">Student ID</th>
+                        <th class="px-6 py-3">Name</th>
+                        <th class="px-6 py-3">Current Balance</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="balances-table-body" class="divide-y divide-slate-100"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
