@@ -14,13 +14,41 @@
             <table class="w-full text-sm text-left text-slate-600">
                 <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
                     <tr>
-                        <th class="px-6 py-3">ID</th>
-                        <th class="px-6 py-3">Name</th>
-                        <th class="px-6 py-3">Course / Year</th>
-                        <th class="px-6 py-3">Section</th>
-                        <th class="px-6 py-3">Balance</th>
-                        <th class="px-6 py-3">Promissory</th>
-                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3">
+                            <button type="button" onclick="students.sortBy('id')" class="flex items-center gap-1 hover:text-slate-700">
+                                ID <span id="students-sort-id" class="text-slate-400"></span>
+                            </button>
+                        </th>
+                        <th class="px-6 py-3">
+                            <button type="button" onclick="students.sortBy('name')" class="flex items-center gap-1 hover:text-slate-700">
+                                Name <span id="students-sort-name" class="text-slate-400"></span>
+                            </button>
+                        </th>
+                        <th class="px-6 py-3">
+                            <button type="button" onclick="students.sortBy('course')" class="flex items-center gap-1 hover:text-slate-700">
+                                Course <span id="students-sort-course" class="text-slate-400"></span>
+                            </button>
+                        </th>
+                        <th class="px-6 py-3">
+                            <button type="button" onclick="students.sortBy('yearSection')" class="flex items-center gap-1 hover:text-slate-700">
+                                Year / Section <span id="students-sort-yearSection" class="text-slate-400"></span>
+                            </button>
+                        </th>
+                        <th class="px-6 py-3">
+                            <button type="button" onclick="students.sortBy('balance')" class="flex items-center gap-1 hover:text-slate-700">
+                                Balance <span id="students-sort-balance" class="text-slate-400"></span>
+                            </button>
+                        </th>
+                        <th class="px-6 py-3">
+                            <button type="button" onclick="students.sortBy('promissory')" class="flex items-center gap-1 hover:text-slate-700">
+                                Promissory <span id="students-sort-promissory" class="text-slate-400"></span>
+                            </button>
+                        </th>
+                        <th class="px-6 py-3">
+                            <button type="button" onclick="students.sortBy('status')" class="flex items-center gap-1 hover:text-slate-700">
+                                Status <span id="students-sort-status" class="text-slate-400"></span>
+                            </button>
+                        </th>
                         <th class="px-6 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
@@ -28,6 +56,19 @@
                     <!-- JS Rendered -->
                 </tbody>
             </table>
+        </div>
+
+        <div class="flex items-center justify-between px-4 py-3 border-t border-slate-200 bg-white">
+            <div id="students-range-info" class="text-xs text-slate-500"></div>
+            <div class="flex items-center space-x-2">
+                <button id="students-prev-btn" type="button" onclick="students.prevPage()" class="px-3 py-1.5 text-xs font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Prev
+                </button>
+                <span id="students-page-info" class="text-xs text-slate-600"></span>
+                <button id="students-next-btn" type="button" onclick="students.nextPage()" class="px-3 py-1.5 text-xs font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Next
+                </button>
+            </div>
         </div>
     </div>
 </section>

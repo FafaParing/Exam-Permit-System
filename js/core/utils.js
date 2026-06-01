@@ -2,7 +2,7 @@
 
 const utils = {
     formatCurrency: function (num) {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+        return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(num);
     },
 
     downloadCSV: function (kind) {

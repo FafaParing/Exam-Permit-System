@@ -164,9 +164,6 @@ const balances = {
                                 ${isCleared ? 'CLEARED' : 'WITH BALANCE'}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-right">
-                            <button onclick="balances.openEditModal('${s.id}')" class="text-brand-600 hover:underline text-sm">Edit Balance</button>
-                        </td>
                     </tr>
                 `;
             }
@@ -175,25 +172,6 @@ const balances = {
     filter(mode) {
         this.filterMode = mode;
         this.render();
-    },
-    openEditModal(id) {
-        const s = utils.getStudent(id);
-        const f = document.querySelector('#balance-edit-modal form');
-        f.studentId.value = s.id;
-        f.newBalance.value = s.balance;
-        utils.openModal('balance-edit-modal');
-    },
-    update(e) {
-        e.preventDefault();
-        const id = String(e.target.studentId.value || '').trim();
-        const newBal = parseFloat(e.target.newBalance.value);
-        const student = db.data.students.find(s => String(s.id) === id);
-        student.balance = newBal;
-        db.save();
-        db.log('Balance Updated', `Student ${student.id} balance set to ${newBal}`);
-        utils.closeModal('balance-edit-modal');
-        this.render();
-        utils.showToast('Balance updated');
     }
 };
 

@@ -65,11 +65,12 @@ const auth = {
 
 window.auth = auth;
 
-// Guard: main.html should require login
-// (Keep it simple: if this script is loaded on main.html, enforce it.)
+// Guard: app entry page should require login
+// (Keep it simple: if this script is loaded on index.html/main.html, enforce it.)
 try {
     const path = String(window.location.pathname || '');
-    if (path.toLowerCase().indexOf('main.html') !== -1) {
+    const p = path.toLowerCase();
+    if (p.indexOf('index.html') !== -1 || p.indexOf('main.html') !== -1) {
         auth.requireLogin();
     }
 } catch (e) { }

@@ -23,10 +23,10 @@
             else errEl.classList.add('hidden');
         }
 
-        // If already logged in (e.g. you went back), go to main
+        // If already logged in (e.g. you went back), go to app
         try {
             if (sessionStorage.getItem('examPortal_loggedIn') === '1') {
-                window.location.href = './main.html';
+                window.location.href = './index.html';
                 return;
             }
         } catch (e) { }
@@ -51,7 +51,7 @@
             } catch (err) { }
 
             showError(false);
-            window.location.href = './main.html';
+            window.location.href = './index.html';
         });
 
         if (userEl) userEl.focus();

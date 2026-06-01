@@ -30,9 +30,6 @@ const balances = {
                 + (isCleared ? 'CLEARED' : 'WITH BALANCE')
                 + '</span>'
                 + '</td>'
-                + '<td class="px-6 py-4 text-right">'
-                + '<button onclick="balances.openEditModal(\'' + String(s.id).replace(/'/g, "\\'") + '\')" class="text-brand-600 hover:underline text-sm">Edit Balance</button>'
-                + '</td>'
                 + '</tr>';
         }
 
@@ -42,39 +39,6 @@ const balances = {
     filter: function (mode) {
         this.filterMode = mode;
         this.render();
-    },
-
-    openEditModal: function (id) {
-        const s = utils.getStudent(id);
-        if (!s) return;
-
-        const modal = document.getElementById('balance-edit-modal');
-        if (!modal) return;
-
-        const f = modal.querySelector('form');
-        f.studentId.value = s.id;
-        f.newBalance.value = s.balance;
-        utils.openModal('balance-edit-modal');
-    },
-
-    update: function (e) {
-        e.preventDefault();
-
-        const id = String(e.target.studentId.value || '').replace(/^\s+|\s+$/g, '');
-        const newBal = parseFloat(e.target.newBalance.value);
-
-        let student = null;
-        for (let i = 0; i < db.data.students.length; i++) {
-            if (String(db.data.students[i].id) === id) { student = db.data.students[i]; break; }
-        }
-        if (!student) return;
-
-        student.balance = newBal;
-        db.save();
-        db.log('Balance Updated', 'Student ' + student.id + ' balance set to ' + newBal);
-        utils.closeModal('balance-edit-modal');
-        this.render();
-        utils.showToast('Balance updated');
     }
 };
 

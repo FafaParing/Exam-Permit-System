@@ -36,10 +36,92 @@ const db = {
             this.data = JSON.parse(stored);
             const changed = this.migrateStudentIds();
             const semChanged = this.migrateSemesterData();
-            if (changed || semChanged) this.save();
+
+            const sectionsChanged = this.migrateSectionsToLetters();
+            if (changed || semChanged || sectionsChanged) this.save();
         } else {
             this.seed();
         }
+    },
+
+    migrateSectionsToLetters: function () {
+        const allowed = { A: true, B: true, C: true };
+        const toLetter = function (name) {
+            const s = String(name || '').replace(/^\s+|\s+$/g, '');
+            const upper = s.toUpperCase();
+            if (allowed[upper]) return upper;
+            const m = upper.match(/([ABC])\s*$/);
+            return m ? m[1] : null;
+        };
+
+        if (!this.data.sections || !this.data.sections.length) this.data.sections = [];
+        if (!this.data.students || !this.data.students.length) this.data.students = [];
+
+        const canonicalByLetter = {};
+        const canonicalIdByLetter = {};
+        const remap = {};
+        const removeIds = {};
+        let mutated = false;
+
+        // Normalize existing sections and merge duplicates by letter
+        for (let i = 0; i < this.data.sections.length; i++) {
+            const sec = this.data.sections[i];
+            const letter = toLetter(sec.name) || 'A';
+            if (String(sec.name || '').toUpperCase() !== letter) {
+                sec.name = letter;
+                mutated = true;
+            }
+
+            if (!canonicalByLetter[letter]) {
+                canonicalByLetter[letter] = sec;
+                canonicalIdByLetter[letter] = sec.id;
+            } else {
+                remap[sec.id] = canonicalIdByLetter[letter];
+                removeIds[sec.id] = true;
+                mutated = true;
+            }
+        }
+
+        // Remove duplicates (if any)
+        if (mutated) {
+            const nextSections = [];
+            for (let j = 0; j < this.data.sections.length; j++) {
+                const sec2 = this.data.sections[j];
+                if (!removeIds[sec2.id]) nextSections.push(sec2);
+            }
+            this.data.sections = nextSections;
+        }
+
+        // Ensure A/B/C exist
+        const letters = ['A', 'B', 'C'];
+        let maxId = 0;
+        for (let k = 0; k < this.data.sections.length; k++) {
+            const id = parseInt(this.data.sections[k].id, 10);
+            if (!isNaN(id) && id > maxId) maxId = id;
+        }
+        for (let l = 0; l < letters.length; l++) {
+            const L = letters[l];
+            if (!canonicalIdByLetter[L]) {
+                maxId++;
+                const newSec = { id: maxId, name: L, course: '', yearLevel: 1, adviser: 'TBD' };
+                this.data.sections.push(newSec);
+                canonicalIdByLetter[L] = newSec.id;
+                mutated = true;
+            }
+        }
+
+        // Remap students.sectionId if their old section was merged/removed
+        for (let s = 0; s < this.data.students.length; s++) {
+            const st = this.data.students[s];
+            const old = st.sectionId;
+            if (typeof old === 'undefined' || old === null) continue;
+            if (remap[old]) {
+                st.sectionId = remap[old];
+                mutated = true;
+            }
+        }
+
+        return mutated;
     },
 
     migrateStudentIds: function () {
@@ -175,9 +257,9 @@ const db = {
     seed: function () {
         // Seed Initial Data
         this.data.sections = [
-            { id: 1, name: 'BSIT-1A', course: 'BSIT', yearLevel: 1, adviser: 'Mr. Smith' },
-            { id: 2, name: 'BSCS-2A', course: 'BSCS', yearLevel: 2, adviser: 'Ms. Doe' },
-            { id: 3, name: 'BSBA-3A', course: 'BSBA', yearLevel: 3, adviser: 'Mr. Brown' }
+            { id: 1, name: 'A', course: 'BSIT', yearLevel: 1, adviser: 'Mr. Smith' },
+            { id: 2, name: 'B', course: 'BSIT', yearLevel: 1, adviser: 'Ms. Doe' },
+            { id: 3, name: 'C', course: 'BSIT', yearLevel: 1, adviser: 'Mr. Brown' }
         ];
         this.data.teachers = [
             { id: 1, name: 'Mr. Smith', email: 'smith@school.edu', subjects: 'Programming 101' },

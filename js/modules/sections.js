@@ -1,6 +1,8 @@
 // --- 4. MODULE LOGIC: SECTIONS ---
 
 const sections = {
+    allowedNames: ['A', 'B', 'C'],
+
     render: function () {
         const tbody = document.getElementById('sections-table-body');
         if (!tbody) return;
@@ -55,9 +57,26 @@ const sections = {
         e.preventDefault();
         const f = e.target;
 
+        const rawName = String(f.name.value || '').replace(/\s+/g, '').toUpperCase();
+        const name = (this.allowedNames.indexOf(rawName) >= 0) ? rawName : '';
+        if (!name) {
+            utils.showToast('Section name must be A, B, or C only.', 'error');
+            return;
+        }
+
+        // Enforce unique section letters (global)
+        for (let i = 0; i < db.data.sections.length; i++) {
+            const existing = db.data.sections[i];
+            if (f.id.value && existing.id == f.id.value) continue;
+            if (String(existing.name || '').toUpperCase() === name) {
+                utils.showToast('Section ' + name + ' already exists.', 'error');
+                return;
+            }
+        }
+
         const data = {
             id: f.id.value ? parseInt(f.id.value, 10) : Date.now(),
-            name: f.name.value,
+            name: name,
             course: f.course.value,
             yearLevel: parseInt(f.yearLevel.value, 10),
             adviser: 'TBD' // Simplified
