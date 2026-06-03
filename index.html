@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind Config for Custom Colors -->
-    <script src="./js/tailwind-config.js"></script>
+    <script src="./js/lib/tailwind-config.js"></script>
 
     <style>
         /* Custom Scrollbar */
@@ -75,15 +75,14 @@
                 <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Management</li>
                 <li><button onclick="nav.to('students')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-user-graduate w-6"></i> Students</button></li>
                 <li><button onclick="nav.to('teachers')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-chalkboard-user w-6"></i> Teachers</button></li>
-                <li><button onclick="nav.to('sections')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-users w-6"></i> Sections</button></li>
                 
                 <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Finance & Eligibility</li>
-                <li><button onclick="nav.to('balances')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-wallet w-6"></i> Balances</button></li>
                 <li><button onclick="nav.to('promissory')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-file-signature w-6"></i> Promissory Notes</button></li>
                 
                 <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Exam System</li>
                 <li><button onclick="nav.to('periods')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-calendar-days w-6"></i> Exam Periods</button></li>
                 <li><button onclick="nav.to('permits')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-ticket w-6"></i> Exam Permits</button></li>
+                <li><button onclick="nav.to('verification-logs')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-clipboard-check w-6"></i> Verification Logs</button></li>
                 
                 <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">System</li>
                 <li><button onclick="nav.to('reports')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-chart-pie w-6"></i> Reports</button></li>
@@ -129,42 +128,6 @@
 
     <!-- MODALS (Generic Wrapper) -->
     <div id="modal-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-50 hidden z-40 flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0">
-
-        <!-- Section Modal -->
-        <div id="section-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
-            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-                <h3 class="font-semibold text-lg text-slate-800">Section Details</h3>
-                <button onclick="utils.closeModal('section-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <form onsubmit="sections.save(event)" class="p-6 space-y-4">
-                <input type="hidden" name="id">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Section Name</label>
-                    <select name="name" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Course</label>
-                    <input type="text" name="course" required class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Year Level</label>
-                    <select name="yearLevel" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </div>
-                <div class="pt-2 flex justify-end space-x-3">
-                    <button type="button" onclick="utils.closeModal('section-modal')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700">Save Section</button>
-                </div>
-            </form>
-        </div>
 
         <!-- Promissory Note Modal (Review) -->
         <div id="promissory-review-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
@@ -255,16 +218,15 @@
     <script src="./js/modules/dashboard.js" defer></script>
     <script src="./js/modules/students.js" defer></script>
     <script src="./js/modules/teachers.js" defer></script>
-    <script src="./js/modules/sections.js" defer></script>
-    <script src="./js/modules/balances.js" defer></script>
     <script src="./js/modules/promissory.js" defer></script>
     <script src="./js/modules/periods.js" defer></script>
     <script src="./js/modules/permits.js" defer></script>
+    <script src="./js/modules/verification-logs.js" defer></script>
     <script src="./js/modules/reports.js" defer></script>
     <script src="./js/modules/settings.js" defer></script>
 
     <script src="./js/core/auth.js" defer></script>
     <script src="./js/init.js" defer></script>
-    <script src="./js/module-loader.js" defer></script>
+    <script src="./js/lib/module-loader.js" defer></script>
 </body>
 </html>

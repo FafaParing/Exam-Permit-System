@@ -1,5 +1,4 @@
-// Basic demo login (no persistence across refresh)
-
+// Login page handler - frontend authentication only
 (function () {
     function onReady(fn) {
         if (document.readyState === 'loading') {
@@ -19,11 +18,10 @@
 
         function showError(show) {
             if (!errEl) return;
-            if (show) errEl.classList.remove('hidden');
-            else errEl.classList.add('hidden');
+            errEl.classList[show ? 'remove' : 'add']('hidden');
         }
 
-        // If already logged in (e.g. you went back), go to app
+        // Redirect if already logged in
         try {
             if (sessionStorage.getItem('examPortal_loggedIn') === '1') {
                 window.location.href = './index.html';
@@ -33,27 +31,19 @@
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+            const u = (userEl?.value || '').trim();
+            const p = (passEl?.value || '').trim();
 
-            const username = userEl ? userEl.value : '';
-            const password = passEl ? passEl.value : '';
-
-            const u = String(username || '').trim();
-            const p = String(password || '').trim();
-            const ok = (u !== '' && p !== '');
-
-            if (!ok) {
+            if (!u || !p) {
                 showError(true);
                 return;
             }
 
-            try {
-                sessionStorage.setItem('examPortal_loggedIn', '1');
-            } catch (err) { }
-
+            sessionStorage.setItem('examPortal_loggedIn', '1');
             showError(false);
             window.location.href = './index.html';
         });
 
-        if (userEl) userEl.focus();
+        userEl?.focus();
     });
 })();

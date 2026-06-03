@@ -1,20 +1,11 @@
-// --- AUTH (Simulation) ---
-
+// Authentication - Frontend demo mode only (no backend validation)
 const auth = {
     key: 'examPortal_loggedIn',
 
     wasReload: function () {
-        // Basic reload detection so login does NOT survive refresh
-        // Old API (works in many browsers)
-        if (window.performance && window.performance.navigation && window.performance.navigation.type === 1) return true;
-
-        // Newer API
-        if (window.performance && typeof window.performance.getEntriesByType === 'function') {
-            const navEntries = window.performance.getEntriesByType('navigation');
-            if (navEntries && navEntries[0] && navEntries[0].type === 'reload') return true;
-        }
-
-        return false;
+        if (window.performance?.navigation?.type === 1) return true;
+        const navEntries = window.performance?.getEntriesByType?.('navigation');
+        return navEntries?.[0]?.type === 'reload' || false;
     },
 
     isLoggedIn: function () {
@@ -26,51 +17,36 @@ const auth = {
     },
 
     login: function (username, password) {
-        // Demo rule: any non-empty values
-        const u = String(username || '').replace(/^\s+|\s+$/g, '');
-        const p = String(password || '').replace(/^\s+|\s+$/g, '');
+        const u = String(username || '').trim();
+        const p = String(password || '').trim();
         if (!u || !p) return false;
-
-        try {
-            sessionStorage.setItem(this.key, '1');
-        } catch (e) { }
-
+        sessionStorage.setItem(this.key, '1');
         return true;
     },
 
     logout: function () {
-        try {
-            sessionStorage.removeItem(this.key);
-        } catch (e) { }
-
+        sessionStorage.removeItem(this.key);
         window.location.href = './login.html';
     },
 
     requireLogin: function () {
-        // If user refreshed, treat as logged out
         if (this.wasReload()) {
-            try {
-                sessionStorage.removeItem(this.key);
-            } catch (e) { }
+            sessionStorage.removeItem(this.key);
         }
-
         if (!this.isLoggedIn()) {
             window.location.href = './login.html';
             return false;
         }
-
         return true;
     }
 };
 
 window.auth = auth;
 
-// Guard: app entry page should require login
-// (Keep it simple: if this script is loaded on index.html/main.html, enforce it.)
+// Guard: require login on index.html
 try {
-    const path = String(window.location.pathname || '');
-    const p = path.toLowerCase();
-    if (p.indexOf('index.html') !== -1 || p.indexOf('main.html') !== -1) {
+    const path = window.location.pathname?.toLowerCase() || '';
+    if (path.includes('index.html') || path.includes('main.html')) {
         auth.requireLogin();
     }
 } catch (e) { }

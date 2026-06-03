@@ -1,4 +1,4 @@
-// --- 2. UTILITY FUNCTIONS ---
+// Utility functions - formatting, DOM helpers, modals, etc.
 
 const utils = {
     formatCurrency: function (num) {
