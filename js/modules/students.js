@@ -1,15 +1,8 @@
 // --- 4. MODULE LOGIC: STUDENTS ---
 
-function _trim(str) {
-    return String(str || '').replace(/^\s+|\s+$/g, '');
-}
-
-function _escapeSingleQuotes(str) {
-    return String(str).replace(/'/g, "\\'");
-}
+// View-only module: renders seeded/mock data from db.data.students.
 
 const students = {
-    idPrefix: '02000',
     pageSize: 25,
     page: 1,
     sortKey: 'id',
@@ -80,38 +73,6 @@ const students = {
     nextPage: function () {
         this.page = this.page + 1;
         this.render();
-    },
-
-    isValidStudentId: function (id) {
-        return /^02000\d{6}$/.test(_trim(id));
-    },
-
-    generateId: function () {
-        const existing = {};
-        for (let i = 0; i < db.data.students.length; i++) {
-            existing[String(db.data.students[i].id)] = true;
-        }
-
-        // Try random IDs first
-        for (let tries = 0; tries < 100; tries++) {
-            const rand = Math.floor(Math.random() * 1000000);
-            let randStr = String(rand);
-            while (randStr.length < 6) randStr = '0' + randStr;
-            const candidate = this.idPrefix + randStr;
-            if (!existing[candidate]) return candidate;
-        }
-
-        // Fallback: deterministic-ish based on time, with collision handling
-        const base = (Date.now() % 1000000);
-        for (let offset = 0; offset < 1000000; offset++) {
-            const next = (base + offset) % 1000000;
-            let nextStr = String(next);
-            while (nextStr.length < 6) nextStr = '0' + nextStr;
-            const candidate2 = this.idPrefix + nextStr;
-            if (!existing[candidate2]) return candidate2;
-        }
-
-        throw new Error('Unable to generate unique Student ID');
     },
 
     render: function () {
@@ -218,8 +179,6 @@ const students = {
                 const color = (prom2.status === 'Approved') ? 'text-green-600' : (prom2.status === 'Rejected' ? 'text-red-600' : 'text-amber-600');
                 promStatus = '<span class="' + color + ' font-medium">' + prom2.status + '</span>';
             }
-
-            const sid = _escapeSingleQuotes(s2.id);
             html += ''
                 + '<tr class="bg-white border-b hover:bg-slate-50 transition-colors">'
                 + '<td class="px-6 py-4 font-medium text-slate-900">' + s2.id + '</td>'
@@ -229,157 +188,16 @@ const students = {
                 + '<td class="px-6 py-4 font-mono">' + utils.formatCurrency(s2.balance) + '</td>'
                 + '<td class="px-6 py-4">' + promStatus + '</td>'
                 + '<td class="px-6 py-4">' + statusBadge + '</td>'
-                + '<td class="px-6 py-4 text-right">'
-                + '<button onclick="students.edit(\'' + sid + '\')" class="text-blue-600 hover:text-blue-900 mr-3"><i class="fa-solid fa-pen"></i></button>'
-                + '<button onclick="students.delete(\'' + sid + '\')" class="text-red-600 hover:text-red-900"><i class="fa-solid fa-trash"></i></button>'
-                + '</td>'
                 + '</tr>';
         }
 
         if (!html) {
-            html = '<tr class="bg-white"><td class="px-6 py-10 text-center text-slate-500" colspan="8">No students found.</td></tr>';
+            html = '<tr class="bg-white"><td class="px-6 py-10 text-center text-slate-500" colspan="7">No students found.</td></tr>';
         }
 
         tbody.innerHTML = html;
         this._setSortIndicators();
         this._setPaginationUI(total);
-    },
-
-    openModal: function (id) {
-        if (typeof id === 'undefined') id = null;
-
-        const modal = document.getElementById('student-modal');
-        if (!modal) return;
-
-        const form = modal.querySelector('form');
-        form.reset();
-        modal.querySelector('input[name="id"]').value = '';
-
-        const studentIdInput = form.querySelector('[name="studentId"]');
-        const balanceDisplay = document.getElementById('student-balance-display');
-
-        // Populate sections
-        const select = document.getElementById('student-section-select');
-        let options = '';
-        for (let i = 0; i < db.data.sections.length; i++) {
-            options += '<option value="' + db.data.sections[i].id + '">' + db.data.sections[i].name + '</option>';
-        }
-        if (select) select.innerHTML = options;
-
-        if (id) {
-            const s = utils.getStudent(id);
-            if (!s) return;
-
-            form.querySelector('[name="id"]').value = s.id;
-            studentIdInput.value = s.id;
-            studentIdInput.readOnly = true;
-            studentIdInput.classList.add('bg-slate-50');
-
-            form.querySelector('[name="firstName"]').value = s.firstName;
-            form.querySelector('[name="lastName"]').value = s.lastName;
-            form.querySelector('[name="course"]').value = s.course;
-            form.querySelector('[name="yearLevel"]').value = s.yearLevel;
-            form.querySelector('[name="sectionId"]').value = s.sectionId;
-            if (balanceDisplay) balanceDisplay.textContent = utils.formatCurrency(s.balance);
-        } else {
-            studentIdInput.value = '';
-            studentIdInput.readOnly = false;
-            studentIdInput.classList.remove('bg-slate-50');
-
-            // Balance is managed outside this system (mock/display only)
-            if (balanceDisplay) balanceDisplay.textContent = utils.formatCurrency(0);
-        }
-
-        utils.openModal('student-modal');
-    },
-
-    edit: function (id) {
-        this.openModal(id);
-    },
-
-    save: function (e) {
-        e.preventDefault();
-        const f = e.target;
-        const existingId = _trim(f.id.value);
-
-        let newId = _trim(f.studentId.value);
-        if (!existingId) {
-            if (!newId) newId = this.generateId();
-
-            if (!this.isValidStudentId(newId)) {
-                utils.showToast('Invalid Student ID format. Use 02000 + 6 digits.', 'error');
-                return;
-            }
-
-            let isDuplicate = false;
-            for (let i = 0; i < db.data.students.length; i++) {
-                if (String(db.data.students[i].id) === newId) {
-                    isDuplicate = true;
-                    break;
-                }
-            }
-
-            if (isDuplicate) {
-                utils.showToast('Student ID already exists. Please use a unique ID.', 'error');
-                return;
-            }
-        } else {
-            // Keep ID immutable for existing records
-            newId = existingId;
-        }
-
-        // Balance is view-only in this system; preserve existing value if present.
-        let preservedBalance = 0;
-        if (existingId) {
-            const existingStudent = utils.getStudent(existingId);
-            if (existingStudent && typeof existingStudent.balance !== 'undefined' && existingStudent.balance !== null) {
-                preservedBalance = parseFloat(existingStudent.balance);
-                if (isNaN(preservedBalance)) preservedBalance = 0;
-            }
-        }
-
-        const studentData = {
-            id: newId,
-            firstName: f.firstName.value,
-            lastName: f.lastName.value,
-            course: f.course.value,
-            yearLevel: parseInt(f.yearLevel.value, 10),
-            sectionId: parseInt(f.sectionId.value, 10),
-            balance: preservedBalance
-        };
-
-        if (existingId) {
-            let idx = -1;
-            for (let j = 0; j < db.data.students.length; j++) {
-                if (String(db.data.students[j].id) === existingId) {
-                    idx = j;
-                    break;
-                }
-            }
-            if (idx >= 0) db.data.students[idx] = studentData;
-            db.log('Student Updated', 'Updated ' + studentData.firstName + ' ' + studentData.lastName);
-        } else {
-            db.data.students.push(studentData);
-            db.log('Student Added', 'Added ' + studentData.firstName + ' ' + studentData.lastName);
-        }
-
-        db.save();
-        utils.closeModal('student-modal');
-        this.render();
-        utils.showToast('Student saved successfully');
-    },
-
-    delete: function (id) {
-        if (!confirm('Are you sure you want to delete this student?')) return;
-
-        const next = [];
-        for (let i = 0; i < db.data.students.length; i++) {
-            if (String(db.data.students[i].id) !== String(id)) next.push(db.data.students[i]);
-        }
-        db.data.students = next;
-        db.save();
-        this.render();
-        utils.showToast('Student deleted', 'info');
     }
 };
 

@@ -1,13 +1,10 @@
 <!-- 2. STUDENTS MODULE -->
 <section id="students" class="page-section">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex items-center mb-6">
         <div class="relative w-64">
             <input type="text" id="student-search" placeholder="Search students..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-shadow">
             <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400"></i>
         </div>
-        <button onclick="students.openModal()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center transition-colors shadow-sm">
-            <i class="fa-solid fa-plus mr-2"></i> Add Student
-        </button>
     </div>
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="overflow-x-auto">
@@ -49,7 +46,6 @@
                                 Status <span id="students-sort-status" class="text-slate-400"></span>
                             </button>
                         </th>
-                        <th class="px-6 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="students-table-body" class="divide-y divide-slate-100">
