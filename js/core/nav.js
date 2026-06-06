@@ -13,13 +13,13 @@ const nav = {
             dashboard: 'Dashboard', students: 'Students', teachers: 'Teachers',
             promissory: 'Promissory Notes', periods: 'Exam Periods',
             permits: 'Exam Permits', 'verification-logs': 'Verification Logs', 
-            reports: 'Reports', settings: 'Settings'
+            settings: 'Settings'
         };
         const titleEl = document.getElementById('page-title');
         if (titleEl && titles[pageId]) titleEl.innerText = titles[pageId];
 
         // Refresh module data
-        const modules = { dashboard, students, teachers, promissory, periods, permits, verificationLogs, reports, settings };
+        const modules = { dashboard, students, teachers, promissory, periods, permits, verificationLogs, settings };
         if (modules[pageId]?.render) modules[pageId].render();
 
         // Close mobile menu
