@@ -1,7 +1,20 @@
 // --- 4. MODULE LOGIC: STUDENTS ---
 
-// View-only module: renders seeded/mock data from db.data.students.
+function showToast(message, success = true) {
+    const toast = document.getElementById('toast');
 
+    toast.textContent = message;
+
+    toast.className =
+        'fixed top-5 right-5 px-4 py-3 rounded-lg shadow-lg text-white z-50 ' +
+        (success ? 'bg-green-500' : 'bg-red-500');
+
+    toast.classList.remove('hidden');
+
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+}
 const students = {
     pageSize: 25,
     page: 1,
@@ -72,6 +85,84 @@ const students = {
 
     nextPage: function () {
         this.page = this.page + 1;
+        this.render();
+    },
+    openAddModal: function () {
+        const modal = document.getElementById('add-student-modal');
+        const sectionSelect = document.getElementById('student-sectionId');
+
+        if (!modal || !sectionSelect) return;
+
+        sectionSelect.innerHTML = '<option value="">Select Section</option>';
+
+        if (db.data.sections) {
+            for (let i = 0; i < db.data.sections.length; i++) {
+                const section = db.data.sections[i];
+
+                sectionSelect.innerHTML +=
+                    '<option value="' + section.id + '">' +
+                    section.name +
+                    '</option>';
+            }
+        }
+
+        modal.classList.remove('hidden');
+    },
+
+    closeAddModal: function () {
+        const modal = document.getElementById('add-student-modal');
+
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    },
+
+    saveStudent: function (event) {
+        event.preventDefault();
+
+        const firstName = document.getElementById('student-firstName').value.trim();
+        const lastName = document.getElementById('student-lastName').value.trim();
+        const course = document.getElementById('student-course').value.trim();
+        const yearLevel = parseInt(document.getElementById('student-yearLevel').value);
+        const sectionId = parseInt(document.getElementById('student-sectionId').value);
+
+        let newId = 1;
+
+        if (db.data.students.length > 0) {
+            const ids = db.data.students.map(function (s) {
+                return parseInt(s.id);
+            });
+
+            newId = Math.max.apply(null, ids) + 1;
+        }
+        const duplicate = db.data.students.find(student =>
+            student.firstName.toLowerCase() === firstName.toLowerCase() &&
+            student.lastName.toLowerCase() === lastName.toLowerCase()
+        );
+        if (duplicate) {
+            showToast("Student already exists!", false);
+            return;
+        }
+
+        db.data.students.push({
+            id: newId,
+            firstName: firstName,
+            lastName: lastName,
+            course: course,
+            yearLevel: yearLevel,
+            sectionId: sectionId,
+            balance: 0
+        });
+
+        console.log("Student pushed");
+
+        showToast("Student added successfully!");
+
+        console.log("Toast shown");
+
+        event.target.reset();
+
+        this.closeAddModal();
         this.render();
     },
 
@@ -199,6 +290,9 @@ const students = {
         this._setSortIndicators();
         this._setPaginationUI(total);
     }
+
 };
+
+
 
 window.students = students;

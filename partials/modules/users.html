@@ -1,0 +1,62 @@
+<!-- USERS MODULE -->
+<section id="users" class="page-section">
+    <div class="flex items-center mb-6">
+        <div class="relative w-64">
+            <input type="text" id="user-search" placeholder="Search users..."
+                class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-shadow">
+            <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400"></i>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-slate-600">
+                <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Name</th>
+                        <th class="px-6 py-3">Email</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="users-table-body" class="divide-y divide-slate-100">
+                    <!-- JS Rendered -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-sm">
+
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 rounded-t-xl">
+                <h3 class="font-semibold text-lg text-slate-800">Confirm Action</h3>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6">
+                <p id="confirm-text" class="text-slate-700 text-sm">
+                    Are you sure?
+                </p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="px-6 py-4 flex justify-end space-x-3 border-t border-slate-100">
+
+                <button id="confirm-no"
+                    class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">
+                    Cancel
+                </button>
+
+                <button id="confirm-yes"
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">
+                    Confirm
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>

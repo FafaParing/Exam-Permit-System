@@ -62,6 +62,7 @@
             './partials/modules/dashboard.html',
             './partials/modules/students.html',
             './partials/modules/teachers.html',
+            './partials/modules/users.html',
             './partials/modules/sections.html',
             './partials/modules/balances.html',
             './partials/modules/promissory.html',

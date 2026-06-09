@@ -10,7 +10,7 @@ const nav = {
 
         // Update page title
         const titles = {
-            dashboard: 'Dashboard', students: 'Students', teachers: 'Teachers',
+            dashboard: 'Dashboard', students: 'Students', teachers: 'Teachers', users: 'Users',
             promissory: 'Promissory Notes', periods: 'Exam Periods',
             permits: 'Exam Permits', 'verification-logs': 'Verification Logs', 
             settings: 'Settings'
@@ -19,8 +19,13 @@ const nav = {
         if (titleEl && titles[pageId]) titleEl.innerText = titles[pageId];
 
         // Refresh module data
-        const modules = { dashboard, students, teachers, promissory, periods, permits, verificationLogs, settings };
-        if (modules[pageId]?.render) modules[pageId].render();
+        const pageModule = window[pageId] || (
+            pageId === 'verification-logs' ? window.verificationLogs : null
+        );
+        
+        if (pageModule && pageModule.render && typeof pageModule.render === 'function') {
+            pageModule.render();
+        }
 
         // Close mobile menu
         if (window.innerWidth < 768) {

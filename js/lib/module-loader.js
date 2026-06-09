@@ -57,6 +57,7 @@
             './partials/modules/dashboard.html',
             './partials/modules/students.html',
             './partials/modules/teachers.html',
+            './partials/modules/users.html',
             './partials/modules/promissory.html',
             './partials/modules/periods.html',
             './partials/modules/permits.html',

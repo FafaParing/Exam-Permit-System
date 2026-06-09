@@ -22,6 +22,7 @@ const db = {
     data: {
         students: [],
         teachers: [],
+        users: [],
         sections: [],
         promissoryNotes: [],
         examPeriods: [],
@@ -48,9 +49,17 @@ const db = {
             { id: 3, name: 'C', course: 'BSIT', yearLevel: 1, adviser: 'Mr. Brown' }
         ];
         this.data.teachers = [
-            { id: 1, name: 'Mr. Smith', email: 'smith@school.edu', subjects: 'Programming 101' },
-            { id: 2, name: 'Ms. Doe', email: 'doe@school.edu', subjects: 'Data Structures' },
-            { id: 3, name: 'Mr. Johnson', email: 'johnson@school.edu', subjects: 'Database Management' }
+            { id: 1, lastName: 'Smith', firstName: 'Jhon', status: 'Active' },
+            { id: 2, lastName: 'Doe', firstName: 'Jane', status: 'Active' },
+            { id: 3, lastName: 'Jordan', firstName: 'Michael', status: 'Active' }
+        ];
+        this.data.users = [
+            { id: 1, name: 'Admin User', email: 'admin@school.edu', status: 'Active' },
+            { id: 2, name: 'Mr. Smith', email: 'smith@school.edu', status: 'Active' },
+            { id: 3, name: 'Ms. Doe', email: 'doe@school.edu', status: 'Active' },
+            { id: 4, name: 'Mr. Johnson', email: 'johnson@school.edu', status: 'Active' },
+            { id: 5, name: 'John Doe', email: 'john.doe@school.edu', status: 'Active' },
+            { id: 6, name: 'Jane Smith', email: 'jane.smith@school.edu', status: 'Inactive' }
         ];
         this.data.students = [
             { id: '02000000001', firstName: 'John', lastName: 'Doe', course: 'BSIT', yearLevel: 1, sectionId: 1, balance: 0 },

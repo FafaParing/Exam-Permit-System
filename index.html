@@ -75,6 +75,7 @@
                 <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Management</li>
                 <li><button onclick="nav.to('students')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-user-graduate w-6"></i> Students</button></li>
                 <li><button onclick="nav.to('teachers')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-chalkboard-user w-6"></i> Teachers</button></li>
+                <li><button onclick="nav.to('users')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-users w-6"></i> Admins</button></li>
                 
                 <li class="pt-4 pb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Finance & Eligibility</li>
                 <li><button onclick="nav.to('promissory')" class="nav-item w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition-colors flex items-center"><i class="fa-solid fa-file-signature w-6"></i> Promissory Notes</button></li>
@@ -126,27 +127,6 @@
     <!-- MODALS (Generic Wrapper) -->
     <div id="modal-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-50 hidden z-40 flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0">
 
-        <!-- Promissory Note Modal (Review) -->
-        <div id="promissory-review-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
-            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-                <h3 class="font-semibold text-lg text-slate-800">Review Promissory Note</h3>
-                <button onclick="utils.closeModal('promissory-review-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <div class="p-6">
-                <div id="promissory-details" class="space-y-3 mb-6 text-sm">
-                    <!-- Dynamic Content -->
-                </div>
-                <div class="space-y-3">
-                    <label class="block text-sm font-medium text-slate-700">Admin Remarks</label>
-                    <textarea id="promissory-remarks" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm"></textarea>
-                    <div class="flex justify-between pt-2">
-                        <button onclick="promissory.updateStatus('Rejected')" class="px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200">Reject</button>
-                        <button onclick="promissory.updateStatus('Approved')" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Approve</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Period Modal -->
         <div id="period-modal" class="bg-white rounded-xl shadow-xl w-full max-w-md hidden transform scale-95 transition-transform">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
@@ -169,7 +149,6 @@
                     <select name="semester" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
                         <option value="1st Semester">1st Semester</option>
                         <option value="2nd Semester">2nd Semester</option>
-                        <option value="Summer">Summer</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
@@ -215,6 +194,7 @@
     <script src="./js/modules/dashboard.js" defer></script>
     <script src="./js/modules/students.js" defer></script>
     <script src="./js/modules/teachers.js" defer></script>
+    <script src="./js/modules/users.js" defer></script>
     <script src="./js/modules/promissory.js" defer></script>
     <script src="./js/modules/periods.js" defer></script>
     <script src="./js/modules/permits.js" defer></script>

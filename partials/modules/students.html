@@ -1,10 +1,15 @@
 <!-- 2. STUDENTS MODULE -->
 <section id="students" class="page-section">
-    <div class="flex items-center mb-6">
+    <div class="flex items-center justify-between mb-6">
         <div class="relative w-64">
-            <input type="text" id="student-search" placeholder="Search students..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-shadow">
+            <input type="text" id="student-search" placeholder="Search students..."
+                class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-shadow">
             <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400"></i>
         </div>
+        <button type="button" onclick="students.openAddModal()"
+            class="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors text-sm font-medium">
+            + Add Student
+        </button>
     </div>
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="overflow-x-auto">
@@ -12,40 +17,48 @@
                 <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
                     <tr>
                         <th class="px-6 py-3">
-                            <button type="button" onclick="students.sortBy('id')" class="flex items-center gap-1 hover:text-slate-700">
+                            <button type="button" onclick="students.sortBy('id')"
+                                class="flex items-center gap-1 hover:text-slate-700">
                                 ID <span id="students-sort-id" class="text-slate-400"></span>
                             </button>
                         </th>
                         <th class="px-6 py-3">
-                            <button type="button" onclick="students.sortBy('name')" class="flex items-center gap-1 hover:text-slate-700">
+                            <button type="button" onclick="students.sortBy('name')"
+                                class="flex items-center gap-1 hover:text-slate-700">
                                 Name <span id="students-sort-name" class="text-slate-400"></span>
                             </button>
                         </th>
                         <th class="px-6 py-3">
-                            <button type="button" onclick="students.sortBy('course')" class="flex items-center gap-1 hover:text-slate-700">
+                            <button type="button" onclick="students.sortBy('course')"
+                                class="flex items-center gap-1 hover:text-slate-700">
                                 Course <span id="students-sort-course" class="text-slate-400"></span>
                             </button>
                         </th>
                         <th class="px-6 py-3">
-                            <button type="button" onclick="students.sortBy('yearSection')" class="flex items-center gap-1 hover:text-slate-700">
+                            <button type="button" onclick="students.sortBy('yearSection')"
+                                class="flex items-center gap-1 hover:text-slate-700">
                                 Year / Section <span id="students-sort-yearSection" class="text-slate-400"></span>
                             </button>
                         </th>
                         <th class="px-6 py-3">
-                            <button type="button" onclick="students.sortBy('balance')" class="flex items-center gap-1 hover:text-slate-700">
+                            <button type="button" onclick="students.sortBy('balance')"
+                                class="flex items-center gap-1 hover:text-slate-700">
                                 Balance <span id="students-sort-balance" class="text-slate-400"></span>
                             </button>
                         </th>
                         <th class="px-6 py-3">
-                            <button type="button" onclick="students.sortBy('promissory')" class="flex items-center gap-1 hover:text-slate-700">
+                            <button type="button" onclick="students.sortBy('promissory')"
+                                class="flex items-center gap-1 hover:text-slate-700">
                                 Promissory <span id="students-sort-promissory" class="text-slate-400"></span>
                             </button>
                         </th>
                         <th class="px-6 py-3">
-                            <button type="button" onclick="students.sortBy('status')" class="flex items-center gap-1 hover:text-slate-700">
-                                Status <span id="students-sort-status" class="text-slate-400"></span>
+                            <button type="button" onclick="students.sortBy('status')"
+                                class="flex items-center gap-1 hover:text-slate-700">
+                                Permission <span id="students-sort-status" class="text-slate-400"></span>
                             </button>
                         </th>
+                        <th class="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="students-table-body" class="divide-y divide-slate-100">
@@ -57,14 +70,89 @@
         <div class="flex items-center justify-between px-4 py-3 border-t border-slate-200 bg-white">
             <div id="students-range-info" class="text-xs text-slate-500"></div>
             <div class="flex items-center space-x-2">
-                <button id="students-prev-btn" type="button" onclick="students.prevPage()" class="px-3 py-1.5 text-xs font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <button id="students-prev-btn" type="button" onclick="students.prevPage()"
+                    class="px-3 py-1.5 text-xs font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
                     Prev
                 </button>
                 <span id="students-page-info" class="text-xs text-slate-600"></span>
-                <button id="students-next-btn" type="button" onclick="students.nextPage()" class="px-3 py-1.5 text-xs font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <button id="students-next-btn" type="button" onclick="students.nextPage()"
+                    class="px-3 py-1.5 text-xs font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
                     Next
                 </button>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Add Student Modal -->
+<div id="add-student-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-xl">
+            <h3 class="font-semibold text-lg text-slate-800">Add Student</h3>
+            <button onclick="students.closeAddModal()" class="text-slate-400 hover:text-slate-600"><i
+                    class="fa-solid fa-times"></i></button>
+        </div>
+        <form onsubmit="students.saveStudent(event)" class="p-6 space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+                <input type="text" id="student-firstName" required
+                    class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+                <input type="text" id="student-lastName" required
+                    class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Course</label>
+                <select id="student-course" required
+                    class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    <option value="">Select Course</option>
+                    <option value="BSIT">BSIT</option>
+                    <option value="BSCS">BSCS</option>
+                    <option value="BSA">BSA</option>
+                    <option value="BSBA">BSBA</option>
+                    <option value="BSBA">BSBA</option>
+                    <option value="BSAIS">BSAIS</option>
+                    <option value="BSHM">BSHM</option>
+                    <option value="BSTM">BSTM</option>
+                    <option value="BSCpE">BSCpE</option>
+                    <option value="BMMA">BMMA</option>
+                    <option value="BSC">BSC</option>
+
+
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Year Level</label>
+                <select id="student-yearLevel" required
+                    class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    <option value="">Select Year Level</option>
+                    <option value="1">1st</option>
+                    <option value="2">2nd</option>
+                    <option value="3">3rd</option>
+                    <option value="4">4th</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Section</label>
+                <select id="student-sectionId" required
+                    class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    <option value="">Select Section</option>
+                </select>
+            </div>
+            <div class="pt-2 flex justify-end space-x-3">
+                <button type="button" onclick="students.openAddModal()"
+                    class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+                <button type="submit"
+                    class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700">Add
+                    Student</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="toast" class="hidden fixed top-5 right-5 px-4 py-3 rounded-lg shadow-lg text-white z-50">
+    </div>
+</div>

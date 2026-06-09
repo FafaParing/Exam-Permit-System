@@ -6,6 +6,7 @@ function appInit() {
     // Setup search listeners
     document.getElementById('student-search')?.addEventListener('input', () => students.render());
     document.getElementById('teacher-search')?.addEventListener('input', () => teachers.render());
+    document.getElementById('user-search')?.addEventListener('input', () => users.render());
 
     // Mobile menu toggle
     document.getElementById('mobile-menu-btn')?.addEventListener('click', function () {
